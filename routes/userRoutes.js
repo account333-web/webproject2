@@ -52,7 +52,7 @@ router.post('/avatar', checkAuth, (req, res) => {
 router.get('/info', checkAuth, async (req, res) => {
   try {
     const row = await dbGet(
-      `SELECT u.id, u.balance, u.country, u.company_id, u.avatar_url, c.name AS company
+      `SELECT u.id, u.username, u.balance, u.country, u.company_id, u.avatar_url, c.name AS company
       FROM users u
       LEFT JOIN companies c ON u.company_id = c.id
       WHERE u.id = ?`,
@@ -67,6 +67,7 @@ router.get('/info', checkAuth, async (req, res) => {
 
     res.json({
       id:         row.id,
+      username:   row.username,
       balance:    roundedBal,
       country:    row.country   || 'Sans abris',
       company:    row.company   || 'Au chômage',
@@ -369,6 +370,22 @@ router.post('/black/pong', checkAuth, async (req, res) => {
     await dbRun('ROLLBACK');
     console.error('Erreur encaissement Pong :', err);
     return res.status(500).json({ error: 'db_error' });
+  }
+});
+
+// GET /api/user/rank
+router.get('/rank', checkAuth, async (req, res) => {
+  try {
+    const row = await dbGet(
+      `SELECT COUNT(*) + 1 AS rank
+         FROM users
+        WHERE balance > (SELECT balance FROM users WHERE id = ?)`,
+      [req.session.userId]
+    );
+    res.json({ rank: row.rank });
+  } catch (err) {
+    console.error('User rank error:', err);
+    res.status(500).json({ error: 'db_error' });
   }
 });
 
