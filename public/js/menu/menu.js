@@ -37,6 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Chargement des infos utilisateur et gestion des cartes
 document.addEventListener('DOMContentLoaded', async () => {
+  const loginEl    = document.getElementById('login-link');
+  const signupEl   = document.getElementById('signup-link');
+  const dashEl     = document.getElementById('dashboard-link');
+  const logoutEl   = document.getElementById('logout-link');
+  let logged = false;
+
   try {
     const infoRes = await csrfFetch('/api/user/info');
     if (infoRes.headers.get('Content-Type')?.includes('application/json')) {
@@ -44,11 +50,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('player-name').textContent = info.username;
       document.getElementById('player-balance').textContent = info.balance;
 
-      const rankRes = await csrfFetch('/api/user/rank');
+      const rankRes  = await csrfFetch('/api/user/rank');
       const { rank } = await rankRes.json();
 
       const badgeRes = await csrfFetch('/api/badges');
-      const badges = await badgeRes.json();
+      const badges   = await badgeRes.json();
       const owned = [];
       if (Number(badges.trader) === info.id) owned.push('Top Trader');
       if (Number(badges.snake)  === info.id) owned.push('Top Snake');
@@ -56,10 +62,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const infoEl = document.getElementById('player-info');
       infoEl.innerHTML = `${owned.join(' ')}<br>Rank ${rank}`;
+      logged = true;
     }
   } catch (err) {
     console.error('Menu init error:', err);
   }
+
+  // Mise à jour des boutons de nav
+  if (logged) {
+    loginEl.style.display = 'none';
+    signupEl.style.display = 'none';
+    dashEl.style.display = 'inline-block';
+    logoutEl.style.display = 'inline-block';
+    logoutEl.addEventListener('click', e => {
+      e.preventDefault();
+      csrfFetch('/logout', { method: 'POST' })
+        .then(() => window.location.href = '/index.html');
+    });
+  } else {
+    loginEl.style.display = '';
+    signupEl.style.display = '';
+    dashEl.style.display = 'none';
+    logoutEl.style.display = 'none';
+  }
+
+  // Retrait des squelettes
+  document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
 
   document.querySelectorAll('.card').forEach(card => {
     const link = card.getAttribute('data-link');
@@ -70,3 +98,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+

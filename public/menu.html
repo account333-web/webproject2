@@ -17,8 +17,10 @@
       <span id="logo-text" aria-live="polite">Nerd Corner</span>
     </div>
     <nav class="nav-links">
-      <a href="/index.html">login</a>
-      <a href="/signup.html" class="sign-up">sign up</a>
+      <a href="/index.html" id="login-link">login</a>
+      <a href="/signup.html" class="sign-up" id="signup-link">sign up</a>
+      <a href="/dashboard.html" class="dashboard btn" id="dashboard-link" style="display:none">dashboard</a>
+      <a href="#" id="logout-link" style="display:none">logout</a>
       <select name="language" id="lang-select">
         <option value="fr">French</option>
         <option value="en">English</option>
@@ -27,9 +29,9 @@
   </header>
 
   <main>
-    <div class="title" id="player-name">Guest</div>
-    <div class="value" id="player-balance">0</div>
-    <div class="subtitle" id="player-info"></div>
+    <div class="title skeleton" id="player-name" style="width:120px;height:24px"></div>
+    <div class="value skeleton" id="player-balance" style="width:180px;height:64px"></div>
+    <div class="subtitle skeleton" id="player-info" style="width:160px;height:20px"></div>
     <hr>
     <div class="cards">
       <div class="card" data-link="/snake.html">
