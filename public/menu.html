@@ -17,8 +17,8 @@
       <span id="logo-text" aria-live="polite">Nerd Corner</span>
     </div>
     <nav class="nav-links">
-      <a href="#">login</a>
-      <a href="#" class="sign-up">sign up</a>
+      <a href="/index.html">login</a>
+      <a href="/signup.html" class="sign-up">sign up</a>
       <select name="language" id="lang-select">
         <option value="fr">French</option>
         <option value="en">English</option>
@@ -27,20 +27,20 @@
   </header>
 
   <main>
-    <div class="title">Spectra</div>
-    <div class="value">5378</div>
-    <div class="subtitle">Top 1 Trader<br>Rank 5</div>
+    <div class="title" id="player-name">Guest</div>
+    <div class="value" id="player-balance">0</div>
+    <div class="subtitle" id="player-info"></div>
     <hr>
     <div class="cards">
-      <div class="card">
+      <div class="card" data-link="/snake.html">
         <img src="/assets/nerd.png" alt="Snake">
         <div class="label">Snake</div>
       </div>
-      <div class="card">
+      <div class="card" data-link="/dashboard.html">
         <img src="/assets/nerd.png" alt="Society Chart">
         <div class="label">Society</div>
       </div>
-      <div class="card">
+      <div class="card" data-link="/pong.html">
         <img src="/assets/nerd.png" alt="Gnop">
         <div class="label">Gnop</div>
       </div>
